@@ -9,7 +9,18 @@ from nltk.corpus import stopwords
 import nltk
 import pandas as pd  # untuk menghitung data visualisasi
 import os
-nltk.download('stopwords')
+import logging
+# Supaya log TensorFlow tidak terlalu verbose
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+# Matikan log berlebih dari TensorFlow dan Abseil
+logging.getLogger('tensorflow').setLevel(logging.ERROR)
+try:
+    import absl.logging
+    absl.logging.set_verbosity(absl.logging.ERROR)
+except ImportError:
+    pass
 
 # --- Inisialisasi
 app = Flask(__name__)
@@ -24,6 +35,10 @@ with open('model/label_encoder.pkl', 'rb') as f:
 stop_words = set(stopwords.words('indonesian'))
 stemmer = StemmerFactory().create_stemmer()
 max_len = 100
+
+# Sudah pre-downloaded stopwords di folder nltk_data, jadi tidak perlu download di runtime
+# nltk.download('stopwords')
+nltk.data.path.append(os.path.join(os.getcwd(), 'nltk_data'))
 
 # Studi Kasus: Kenaikan PPN 12%
 # --- Data & Metrik Komentar Kenaikan PPN 12% ---
