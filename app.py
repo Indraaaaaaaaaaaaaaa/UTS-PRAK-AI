@@ -32,13 +32,11 @@ with open('model/tokenizer.pkl', 'rb') as f:
 with open('model/label_encoder.pkl', 'rb') as f:
     label_encoder = pickle.load(f)
 
+# Pastikan NLTK stopwords tersedia
+nltk.download('stopwords', quiet=True)
 stop_words = set(stopwords.words('indonesian'))
 stemmer = StemmerFactory().create_stemmer()
 max_len = 100
-
-# Sudah pre-downloaded stopwords di folder nltk_data, jadi tidak perlu download di runtime
-# nltk.download('stopwords')
-nltk.data.path.append(os.path.join(os.getcwd(), 'nltk_data'))
 
 # Studi Kasus: Kenaikan PPN 12%
 # --- Data & Metrik Komentar Kenaikan PPN 12% ---
